@@ -1,0 +1,21 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Spawner.cs">
+    <Files>
+      <File FileName="Assets\TerrainScript.cs" Line="33" Column="5" />
+      <File FileName="Assets\Tile.cs" Line="141" Column="2" />
+      <File FileName="Assets\Spawner.cs" Line="3" Column="34" />
+      <File FileName="Assets\Cave.cs" Line="4" Column="28" />
+      <File FileName="Assets\Village.cs" Line="1" Column="1" />
+      <File FileName="Assets\CameraController.cs" Line="18" Column="85" />
+      <File FileName="Assets\GUI.cs" Line="42" Column="61" />
+      <File FileName="Assets\Being.cs" Line="41" Column="15" />
+      <File FileName="Assets\Resource.cs" Line="4" Column="29" />
+      <File FileName="Assets\BeingAction.cs" Line="7" Column="2" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
