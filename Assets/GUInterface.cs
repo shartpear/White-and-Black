@@ -1,23 +1,27 @@
 	using UnityEngine;
 	using System.Collections;
 	
-	public class GUI : MonoBehaviour {
-		GameObject selected;//the currently selected game object
-		public Camera camera;
+	public class GUInterface : MonoBehaviour {
+		public World world;
+		public Object selected;//the currently selected game object
+		public GUI gui;
+		public Camera myCamera;
+	public readonly int numberOfButtons=5;
+		
 		
 	void OnGUI () {
 		// Make a background box
-		GUI.Box(new Rect(10,10,100,90), "Loader Menu");
-
-		// Make the first button. If it is pressed, Application.Loadlevel (1) will be executed
-		if(GUI.Button(new Rect(20,40,80,20), "Level 1")) {
-			Application.LoadLevel(1);
-		}
-
-		// Make the second button.
-		if(GUI.Button(new Rect(20,70,80,20), "Level 2")) {
-			Application.LoadLevel(2);
-		}
+	 	string displayed = "White and Black \n";
+			if(selected){
+			displayed=displayed+selected.ToString();}
+		GUI.Box(new Rect(4*Screen.width/5,0,Screen.width/5,Screen.height), displayed);
+		
+		GUI.Button(new Rect(5,6*Screen.height/7,(((4*Screen.width/5)-5)/numberOfButtons)-5,Screen.height/7),"Raise the Ground");
+		GUI.Button(new Rect(10+(Screen.width/5),6*Screen.height/7,(((4*Screen.width/5)-5)/numberOfButtons)-5,Screen.height/7),"Lower The Ground");
+		
+		
+	
+		
 	}
 
 		
@@ -30,32 +34,52 @@
 		// Update is called once per frame
 		void Update () {
 			handleInput();
+			//update selected
+			
 		}
 				
 		void handleInput(){
 			if(Input.anyKeyDown){
-			camera.GetComponent<CameraController>().disengage();	
+			myCamera.GetComponent<CameraController>().disengage();	
 			}
 			
-				Vector3 camPos=camera.transform.position;
-			if (Input.GetKey(KeyCode.DownArrow)){
-				camera.transform.position=new Vector3(camPos.x,camPos.y,camPos.z-cameraMoveSpeed);
-			}else if(Input.GetKey(KeyCode.UpArrow)){
-				camera.transform.position=new Vector3(camPos.x,camPos.y,camPos.z+cameraMoveSpeed);
+				Vector3 camPos=myCamera.transform.position;
+			if (Input.GetAxis("Vertical")==-1){
+				myCamera.transform.position=new Vector3(camPos.x,camPos.y,camPos.z-cameraMoveSpeed);
+			}else if(Input.GetAxis("Vertical")==1){
+				myCamera.transform.position=new Vector3(camPos.x,camPos.y,camPos.z+cameraMoveSpeed);
 				}
 		
-			if(Input.GetKey(KeyCode.LeftArrow)){
-				camera.transform.position=new Vector3(camPos.x-cameraMoveSpeed,camPos.y,camPos.z);
-			}else if(Input.GetKey(KeyCode.RightArrow)){
-				camera.transform.position=new Vector3(camPos.x+cameraMoveSpeed,camPos.y,camPos.z);
+			if(Input.GetAxis("Horizontal")==-1){
+				myCamera.transform.position=new Vector3(camPos.x-cameraMoveSpeed,camPos.y,camPos.z);
+			}else if(Input.GetAxis("Horizontal")==1){
+				myCamera.transform.position=new Vector3(camPos.x+cameraMoveSpeed,camPos.y,camPos.z);
 			}
 			
 			if(Input.GetKey(KeyCode.KeypadPlus)||Input.GetAxis("Mouse ScrollWheel")>0){
-				camera.transform.position=new Vector3(camPos.x,camPos.y-cameraMoveSpeed,camPos.z);
+				myCamera.transform.position=new Vector3(camPos.x,camPos.y-cameraMoveSpeed,camPos.z);
 			}else if(Input.GetKey(KeyCode.KeypadMinus)||Input.GetAxis("Mouse ScrollWheel")<0){
-				camera.transform.position=new Vector3(camPos.x,camPos.y+cameraMoveSpeed,camPos.z);
+				myCamera.transform.position=new Vector3(camPos.x,camPos.y+cameraMoveSpeed,camPos.z);
 			}
 		
+			if(Input.GetMouseButtonDown(0)){
+			RaycastHit hit;
+			Ray vRay = myCamera.ScreenPointToRay(Input.mousePosition);
+			  if (Physics.Raycast (vRay,out hit)) {
+                
+               GameObject hitObject = hit.collider.gameObject;
+				if(hitObject!=null){
+				if(hitObject.GetComponent<Being>()!=null){
+					selected=hitObject.GetComponent<Being>();
+				}else if(hitObject.GetComponent<Spawner>()!=null){
+					selected=hitObject.GetComponent<Spawner>();
+				}else if(hitObject.GetComponent<Tile>()!=null){
+					selected=hitObject.GetComponent<Tile>();
+				}}
+				
+            }
+			
+			}		
 		
 			}//end of handle Input
 	}
